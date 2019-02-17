@@ -15,10 +15,11 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class SocialNetworkService {
+    private static final String MSG_USER_DOES_NOT_EXIST = "User %s does not exist";
     private final PostsRepository postsRepository;
 
-    public List<Post> addNewPost(String userId, String messsage) {
-        Post newPost = Post.builder().user(userId).message(messsage).build();
+    public List<Post> addNewPost(String userId, String message) {
+        Post newPost = Post.builder().user(userId).message(message).build();
         return sortReverseOrder(postsRepository.addPost(newPost));
     }
 
@@ -43,6 +44,6 @@ public class SocialNetworkService {
     }
 
     private Supplier<SocialNetworkValidationException> getSocialNetworkValidationExceptionSupplier(String userId) {
-        return () -> new SocialNetworkValidationException(String.format("User \'%s\' does not exist", userId));
+        return () -> new SocialNetworkValidationException(String.format(MSG_USER_DOES_NOT_EXIST, userId));
     }
 }
