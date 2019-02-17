@@ -3,7 +3,7 @@ Social Network APP
 
 ### Technology stack
 
-Social Network APP service has been built using the following technology stack:
+Social Network service has been built using the following technology stack:
 
 - spring boot
 - java8
