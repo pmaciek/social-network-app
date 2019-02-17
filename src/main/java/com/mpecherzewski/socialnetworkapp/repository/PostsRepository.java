@@ -1,15 +1,21 @@
 package com.mpecherzewski.socialnetworkapp.repository;
 
-import com.mpecherzewski.socialnetworkapp.domain.Post;
+import com.mpecherzewski.socialnetworkapp.domain.model.Post;
+import com.mpecherzewski.socialnetworkapp.domain.model.User;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface PostsRepository {
 
+    Optional<User> getUser(String userName);
+
     List<Post> addPost(Post post);
 
-    Optional<List<Post>> getPostsByUserName(String userName);
+    List<Post> getPostsByUserName(String userId);
 
-    Optional<List<Post>> getFollowedPostsByUserName(String userName);
+    Set<String> followUser(String userId, String userIdToFollow);
+
+    List<Post> getFollowedPostsByUserName(String userId);
 }

@@ -1,11 +1,11 @@
-package com.mpecherzewski.socialnetworkapp.domain;
+package com.mpecherzewski.socialnetworkapp.domain.model;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Builder
 @Getter
@@ -14,7 +14,6 @@ public class Post {
 
     private String user;
     private String message;
-    private LocalDate postDate;
-
+    private LocalDateTime postDate;
 }
 

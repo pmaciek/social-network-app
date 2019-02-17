@@ -7,9 +7,10 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
-@Getter
 @Builder
-class PostEntity {
-    private String message;
-    private LocalDateTime postDate;
+@Getter
+class UserEntity {
+
+    private String userId;
+    private LocalDateTime creationDate;
 }
