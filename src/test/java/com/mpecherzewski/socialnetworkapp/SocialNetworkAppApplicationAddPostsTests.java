@@ -53,7 +53,7 @@ public class SocialNetworkAppApplicationAddPostsTests extends SocialNetworkAppAp
     public void testShouldReturnBadRequestForMessageLongerThan140Chars() {
         //given
         String userID = "userTest1";
-        String message = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+        String message = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
         //when
         ResponseEntity<String> result = callPostForEntity(MessageFormat.format(API_POSTS, userID), createPostRq(message));
