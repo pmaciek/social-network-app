@@ -2,6 +2,8 @@ package com.mpecherzewski.socialnetworkapp;
 
 import com.mpecherzewski.socialnetworkapp.api.model.AddPostRequest;
 import com.mpecherzewski.socialnetworkapp.domain.model.Post;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
@@ -47,11 +49,33 @@ abstract class SocialNetworkAppApplicationBaseTests {
         return AddPostRequest.builder().message(m1).build();
     }
 
-    ResponseEntity<String> callPostForEntity(String api) {
-        return this.restTemplate.postForEntity(api, null, String.class);
+    ResponseEntity<String> callPostForEntity(String api, Object request) {
+        return this.restTemplate.postForEntity(api, request, String.class);
     }
 
     ResponseEntity<String> callGetForEntity(String api) {
         return this.restTemplate.getForEntity(api, String.class);
+    }
+
+    class PostMatcher extends BaseMatcher<Post> {
+        private String user;
+        private String message;
+
+        PostMatcher(String user, String message) {
+            this.user = user;
+            this.message = message;
+        }
+
+        @Override
+        public boolean matches(Object o) {
+            return user.equalsIgnoreCase(((Post) o).getUser())
+                    && message.equalsIgnoreCase(((Post) o).getMessage())
+                    && ((Post) o).getPostDate() != null;
+        }
+
+        @Override
+        public void describeTo(Description description) {
+
+        }
     }
 }

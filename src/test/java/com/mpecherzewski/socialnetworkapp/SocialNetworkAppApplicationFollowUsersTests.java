@@ -1,5 +1,6 @@
 package com.mpecherzewski.socialnetworkapp;
 
+import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +11,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.text.MessageFormat;
 import java.util.Set;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -24,11 +27,11 @@ public class SocialNetworkAppApplicationFollowUsersTests extends SocialNetworkAp
         String userIdToFollow = "notExistingUserToFollow";
 
         //when
-        ResponseEntity<String> result = callPostForEntity(MessageFormat.format(API_FOLLOW_USER, userId, userIdToFollow));
+        ResponseEntity<String> result = callPostForEntity(MessageFormat.format(API_FOLLOW_USER, userId, userIdToFollow), null);
 
         //then
-        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        assertThat(result.getBody()).isEqualTo(MessageFormat.format(MSG_USER_DOES_NOT_EXISTS, userId));
+        assertThat(result.getStatusCode(), is(HttpStatus.BAD_REQUEST));
+        assertThat(result.getBody(), is(MessageFormat.format(MSG_USER_DOES_NOT_EXISTS, userId)));
     }
 
     @Test
@@ -39,11 +42,11 @@ public class SocialNetworkAppApplicationFollowUsersTests extends SocialNetworkAp
         callAddPost(userId, createPostRq("m1"));
 
         //when
-        ResponseEntity<String> result = callPostForEntity(MessageFormat.format(API_FOLLOW_USER, userId, userIdToFollow));
+        ResponseEntity<String> result = callPostForEntity(MessageFormat.format(API_FOLLOW_USER, userId, userIdToFollow), null);
 
         //then
-        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        assertThat(result.getBody()).isEqualTo(MessageFormat.format(MSG_USER_DOES_NOT_EXISTS, userIdToFollow));
+        assertThat(result.getStatusCode(), is(HttpStatus.BAD_REQUEST));
+        assertThat(result.getBody(), is(MessageFormat.format(MSG_USER_DOES_NOT_EXISTS, userIdToFollow)));
     }
 
 
@@ -61,10 +64,9 @@ public class SocialNetworkAppApplicationFollowUsersTests extends SocialNetworkAp
         callFollowUser(userId, userId2);
         Set<String> followedUsers = callFollowUser(userId, userId3);
 
-
         //then
-        assertThat(followedUsers).isNotEmpty();
-        assertThat(followedUsers).containsExactlyInAnyOrder(userId2, userId3);
+        assertThat(followedUsers, hasSize(2));
+        assertThat(followedUsers, IsIterableContainingInOrder.contains(userId2, userId3));
     }
 }
 

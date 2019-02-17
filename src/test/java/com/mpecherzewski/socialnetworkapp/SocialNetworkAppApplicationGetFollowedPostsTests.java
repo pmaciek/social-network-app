@@ -1,7 +1,7 @@
 package com.mpecherzewski.socialnetworkapp;
 
-import com.mpecherzewski.socialnetworkapp.api.model.AddPostRequest;
 import com.mpecherzewski.socialnetworkapp.domain.model.Post;
+import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +12,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.text.MessageFormat;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -38,14 +40,9 @@ public class SocialNetworkAppApplicationGetFollowedPostsTests extends SocialNetw
         List<Post> posts = callGetFollowedPosts(userId);
 
         //then
-        assertThat(posts).isNotEmpty();
-        assertThat(posts).hasSize(2);
-        assertThat(posts.get(0).getUser()).isEqualTo(userId2);
-        assertThat(posts.get(0).getMessage()).isEqualTo(message3);
-        assertThat(posts.get(0).getPostDate()).isNotNull();
-        assertThat(posts.get(1).getUser()).isEqualTo(userId1);
-        assertThat(posts.get(1).getMessage()).isEqualTo(message2);
-        assertThat(posts.get(1).getPostDate()).isNotNull();
+        assertThat(posts, hasSize(2));
+        assertThat(posts, IsIterableContainingInOrder.contains(
+                new PostMatcher(userId2, message3), new PostMatcher(userId1, message2)));
     }
 
     @Test
@@ -57,10 +54,8 @@ public class SocialNetworkAppApplicationGetFollowedPostsTests extends SocialNetw
         ResponseEntity<String> result = callGetForEntity(MessageFormat.format(API_GET_FOLLOWED_POSTS, userID));
 
         //then
-        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        assertThat(result.getBody()).isEqualTo(MessageFormat.format(MSG_USER_DOES_NOT_EXISTS,userID));
+        assertThat(result.getStatusCode(), is(HttpStatus.BAD_REQUEST));
+        assertThat(result.getBody(), is(MessageFormat.format(MSG_USER_DOES_NOT_EXISTS, userID)));
     }
-
-
 }
 

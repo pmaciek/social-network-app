@@ -40,7 +40,9 @@ public class SocialNetworkService {
     }
 
     private List<Post> sortReverseOrder(List<Post> posts) {
-        return posts.stream().sorted(Comparator.comparing(Post::getPostDate).reversed()).collect(Collectors.toList());
+        return posts.stream()
+                .sorted(Comparator.comparing(Post::getPostDate).reversed())
+                .collect(Collectors.toList());
     }
 
     private Supplier<SocialNetworkValidationException> getSocialNetworkValidationExceptionSupplier(String userId) {

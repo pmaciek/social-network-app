@@ -14,7 +14,6 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1")
-@Slf4j
 @RequiredArgsConstructor
 public class SocialNetworkApiController {
     private final SocialNetworkService socialNetworkService;
