@@ -16,28 +16,28 @@ and uses in-memory data storage.
 API exposes operation for:
 
 #### Posting message
-url : /api/v1/users/{userId}/posts
+- url : /api/v1/users/{userId}/posts
 
-method : POST
+- method : POST
 
-Data params : A message object , example : {"message": "message to post"}
+- Data params : A message object , example : {"message": "message to post"}
 
 #### Displaying posted messages
-url : /api/v1/users/{userId}/posts
+- url : /api/v1/users/{userId}/posts
 
-method : GET
+- method : GET
 
 #### Following users
-url : /api/v1/users/{userId}/tracks/{userIdToFollow}
+- url : /api/v1/users/{userId}/tracks/{userIdToFollow}
 
-method : POST
+- method : POST
 
-Data params : none
+- Data params : none
 
-#### Displaying followed posts
-url : /api/v1/users/{userId}/tracks
+#### Displaying following posts
+- url : /api/v1/users/{userId}/tracks
 
-method : GET
+- method : GET
 
 
 #### Limitations:
