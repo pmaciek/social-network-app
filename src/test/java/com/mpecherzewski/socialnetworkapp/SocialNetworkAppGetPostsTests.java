@@ -1,6 +1,6 @@
 package com.mpecherzewski.socialnetworkapp;
 
-import com.mpecherzewski.socialnetworkapp.domain.Post;
+import com.mpecherzewski.socialnetworkapp.posts.dto.Post;
 import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class SocialNetworkAppGetPostsTests extends SocialNetworkAppBaseTests {
         //given
         String userID = "userTestAddPost1";
         String userID2 = "userTestAddPost2";
-        String message1 = "new post";
+        String message1 = "new posts";
         String message2 = "new post2";
         callAddPost(userID, createPostRq(message1));
         callAddPost(userID, createPostRq(message2));
@@ -54,7 +54,7 @@ public class SocialNetworkAppGetPostsTests extends SocialNetworkAppBaseTests {
     public void testShouldReturnPostsInReverseOrder() {
         //given
         String userID = "userTestAddPost";
-        String message1 = "new post";
+        String message1 = "new posts";
         String message2 = "new post2";
         String message3 = "new post3";
         callAddPost(userID, createPostRq(message1));

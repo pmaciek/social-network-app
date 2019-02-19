@@ -1,6 +1,6 @@
 package com.mpecherzewski.socialnetworkapp;
 
-import com.mpecherzewski.socialnetworkapp.domain.Post;
+import com.mpecherzewski.socialnetworkapp.posts.dto.Post;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,11 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.MessageFormat;
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -23,34 +21,36 @@ public class SocialNetworkAppAddPostsTests extends SocialNetworkAppBaseTests {
     public void testShouldAddNewPostForNotExistingUser() {
         //given
         String userID = "userTest1";
-        String message = "new post";
+        String message = "new posts";
 
         //when
-        ResponseEntity responseEntity = callAddPost(userID, createPostRq(message));
-        List<Post> posts = callGetPosts(userID);
+        ResponseEntity<Post> responseEntity = callAddPost(userID, createPostRq(message));
 
         //then
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.CREATED));
-        assertThat(posts, hasSize(1));
-        assertThat(posts, hasItems(new PostMatcher(userID, message)));
+        assertThat(responseEntity.getBody().getId(), is(notNullValue()));
+        assertThat(responseEntity.getBody().getUserId(), is(userID));
+        assertThat(responseEntity.getBody().getMessage(), is(message));
+        assertThat(responseEntity.getBody().getPostDate(), is(notNullValue()));
     }
 
     @Test
     public void testShouldAddNewPostForExistingUser() {
         //given
         String userID = "userTest2";
-        String message1 = "new post";
+        String message1 = "new posts";
         String message2 = "new post2";
         callAddPost(userID, createPostRq(message1));
 
         //when
-        ResponseEntity responseEntity = callAddPost(userID, createPostRq(message2));
-        List<Post> posts = callGetPosts(userID);
+        ResponseEntity<Post> responseEntity = callAddPost(userID, createPostRq(message2));
 
         //then
         assertThat(responseEntity.getStatusCode(), is(HttpStatus.CREATED));
-        assertThat(posts, hasSize(2));
-        assertThat(posts, hasItems(new PostMatcher(userID, message1), new PostMatcher(userID, message2)));
+        assertThat(responseEntity.getBody().getId(), is(notNullValue()));
+        assertThat(responseEntity.getBody().getUserId(), is(userID));
+        assertThat(responseEntity.getBody().getMessage(), is(message2));
+        assertThat(responseEntity.getBody().getPostDate(), is(notNullValue()));
     }
 
     @Test

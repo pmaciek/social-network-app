@@ -1,5 +1,6 @@
 package com.mpecherzewski.socialnetworkapp;
 
+import com.mpecherzewski.socialnetworkapp.users.dto.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,9 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -33,7 +38,7 @@ public class SocialNetworkAppFollowUsersTests extends SocialNetworkAppBaseTests 
     @Test
     public void testShouldReturnNotFoundForNotExistingUserToFollow() {
         //given
-        String userId = "user";
+        String userId = "users";
         String userIdToFollow = "notExistingUserToFollow";
         callAddPost(userId, createPostRq("m1"));
 
@@ -44,7 +49,6 @@ public class SocialNetworkAppFollowUsersTests extends SocialNetworkAppBaseTests 
         assertThat(result.getStatusCode(), is(HttpStatus.NOT_FOUND));
         assertThat(result.getBody(), is(MessageFormat.format(MSG_USER_DOES_NOT_EXISTS, userIdToFollow)));
     }
-
 
     @Test
     public void testShouldFollowUser() {
@@ -57,13 +61,15 @@ public class SocialNetworkAppFollowUsersTests extends SocialNetworkAppBaseTests 
         callAddPost(userId3, createPostRq("m2"));
 
         //when
-        ResponseEntity followedUser1 = callFollowUser(userId, userId2);
-        ResponseEntity followedUser2 = callFollowUser(userId, userId3);
+        ResponseEntity<User> responseEntity = callFollowUser(userId, userId2);
 
         //then
-        assertThat(followedUser1.getStatusCode(), is(HttpStatus.CREATED));
-        assertThat(followedUser2.getStatusCode(), is(HttpStatus.CREATED));
-
+        assertThat(responseEntity.getStatusCode(), is(HttpStatus.CREATED));
+        assertThat(responseEntity.getBody().getId(), is(notNullValue()));
+        assertThat(responseEntity.getBody().getUserId(), is(userId));
+        assertThat(responseEntity.getBody().getCreationDate(), is(notNullValue()));
+        assertThat(responseEntity.getBody().getTrackedUsers().size(), is(1));
+        assertThat(responseEntity.getBody().getTrackedUsers(), equalTo(Collections.singletonList(userId2)));
     }
 }
 

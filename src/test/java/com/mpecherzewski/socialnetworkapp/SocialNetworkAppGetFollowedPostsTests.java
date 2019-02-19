@@ -1,6 +1,6 @@
 package com.mpecherzewski.socialnetworkapp;
 
-import com.mpecherzewski.socialnetworkapp.domain.Post;
+import com.mpecherzewski.socialnetworkapp.posts.dto.Post;
 import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,9 +35,9 @@ public class SocialNetworkAppGetFollowedPostsTests extends SocialNetworkAppBaseT
         String userId = "callingUser";
         String userId1 = "userFollowed1";
         String userId2 = "userFollowed2";
-        String message1 = "new post 1";
-        String message2 = "new post 2";
-        String message3 = "new post 3";
+        String message1 = "new posts 1";
+        String message2 = "new posts 2";
+        String message3 = "new posts 3";
         callAddPost(userId, createPostRq(message1));
         callAddPost(userId1, createPostRq(message2));
         callAddPost(userId2, createPostRq(message3));

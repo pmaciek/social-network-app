@@ -1,15 +1,17 @@
-package com.mpecherzewski.socialnetworkapp.domain;
+package com.mpecherzewski.socialnetworkapp.users.dto;
 
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 @Builder
-@Value
 public class User {
+    String id;
     String userId;
     LocalDateTime creationDate;
     List<String> trackedUsers;

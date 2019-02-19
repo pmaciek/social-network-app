@@ -1,6 +1,5 @@
-package com.mpecherzewski.socialnetworkapp.api;
+package com.mpecherzewski.socialnetworkapp.infastructure.mvc;
 
-import com.mpecherzewski.socialnetworkapp.service.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,7 @@ public class ExceptionHandlerController {
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseBody
     public ResponseEntity<String> handleUserNotFoundError(UserNotFoundException exception) {
-        log.error("Requested user not found: {}, {}", exception.getErrorCode(), exception.getMessage());
+        log.error("Requested users not found: {}, {}", exception.getErrorCode(), exception.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getErrorCode());
     }
 }

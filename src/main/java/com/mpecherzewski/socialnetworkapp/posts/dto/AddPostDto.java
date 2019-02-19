@@ -1,4 +1,4 @@
-package com.mpecherzewski.socialnetworkapp.api.model;
+package com.mpecherzewski.socialnetworkapp.posts.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
