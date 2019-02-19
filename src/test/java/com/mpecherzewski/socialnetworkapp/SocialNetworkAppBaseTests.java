@@ -1,9 +1,12 @@
 package com.mpecherzewski.socialnetworkapp;
 
-import com.mpecherzewski.socialnetworkapp.api.model.AddPostRequest;
+import com.mpecherzewski.socialnetworkapp.api.model.AddPostDto;
 import com.mpecherzewski.socialnetworkapp.domain.model.Post;
+import com.mpecherzewski.socialnetworkapp.repository.impl.LocalDateTimeProvider;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
+import org.junit.Before;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.ParameterizedTypeReference;
@@ -12,26 +15,34 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
-abstract class SocialNetworkAppApplicationBaseTests {
+import static org.mockito.Mockito.when;
+
+class SocialNetworkAppBaseTests {
     static final String API_POSTS = "/api/v1/users/{0}/posts";
     static final String API_GET_FOLLOWED_POSTS = "/api/v1/users/{0}/tracks";
     static final String API_FOLLOW_USER = "/api/v1/users/{0}/tracks/{1}";
     static final String MSG_USER_DOES_NOT_EXISTS = "User {0} does not exist";
 
+    @Mock
+    protected LocalDateTimeProvider localDateTimeProvider;
+
+    @Before
+    public void setUp() {
+        when(localDateTimeProvider.getLocalDateNow()).thenReturn(LocalDateTime.now());
+    }
+
     @Autowired
     private TestRestTemplate restTemplate;
 
-    List<Post> callAddPost(String userID, AddPostRequest rq) {
-        return this.restTemplate.exchange(MessageFormat.format(API_POSTS, userID), HttpMethod.POST, new HttpEntity(rq), new ParameterizedTypeReference<List<Post>>() {
-        }).getBody();
+    ResponseEntity callAddPost(String userID, AddPostDto rq) {
+        return this.restTemplate.postForEntity(MessageFormat.format(API_POSTS, userID), new HttpEntity(rq), ResponseEntity.class);
     }
 
-    Set<String> callFollowUser(String userID, String userIdToFollow) {
-        return this.restTemplate.exchange(MessageFormat.format(API_FOLLOW_USER, userID, userIdToFollow), HttpMethod.POST, null, new ParameterizedTypeReference<Set<String>>() {
-        }).getBody();
+    ResponseEntity callFollowUser(String userID, String userIdToFollow) {
+        return this.restTemplate.postForEntity(MessageFormat.format(API_FOLLOW_USER, userID, userIdToFollow), null, ResponseEntity.class);
     }
 
     List<Post> callGetPosts(String userID) {
@@ -45,8 +56,8 @@ abstract class SocialNetworkAppApplicationBaseTests {
     }
 
 
-    AddPostRequest createPostRq(String m1) {
-        return AddPostRequest.builder().message(m1).build();
+    AddPostDto createPostRq(String m1) {
+        return new AddPostDto(m1);
     }
 
     ResponseEntity<String> callPostForEntity(String api, Object request) {
@@ -75,7 +86,6 @@ abstract class SocialNetworkAppApplicationBaseTests {
 
         @Override
         public void describeTo(Description description) {
-
         }
     }
 }

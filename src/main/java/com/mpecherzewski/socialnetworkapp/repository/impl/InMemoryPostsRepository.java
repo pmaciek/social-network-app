@@ -1,96 +1,48 @@
 package com.mpecherzewski.socialnetworkapp.repository.impl;
 
 import com.mpecherzewski.socialnetworkapp.domain.model.Post;
-import com.mpecherzewski.socialnetworkapp.domain.model.User;
 import com.mpecherzewski.socialnetworkapp.repository.PostsRepository;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Component
+@Repository
+@RequiredArgsConstructor
 class InMemoryPostsRepository implements PostsRepository {
 
-    private final Map<String, UserEntity> users = new ConcurrentHashMap<>();
-    private final Map<String, Set<String>> followedUsers = new ConcurrentHashMap<>();
-    private final Map<String, List<PostEntity>> posts = new ConcurrentHashMap<>();
+    private final Map<String, List<PostEntity>> postsByUserId = new ConcurrentHashMap<>();
+
+    private final LocalDateTimeProvider localDateTimeProvider;
 
     @Override
-    public List<Post> addPost(Post post) {
+    public void addPost(Post post) {
         String userId = post.getUser();
-        addUserIfAbsent(userId);
         addNewPost(post, userId);
-        return retrievePostsByUserId(userId);
     }
 
     @Override
-    public Optional<User> getUser(String userName) {
-        return Optional.ofNullable(users.get(userName)).map(mapUserEntityToUser());
-    }
-
-    @Override
-    public List<Post> getPostsByUserName(String userId) {
-        return retrievePostsByUserId(userId);
-    }
-
-    @Override
-    public List<Post> getFollowedPostsByUserName(String userId) {
-        if (isUserPresent(userId)) {
-            return getFollowedUsersByUserId(userId)
-                    .stream()
-                    .map(user -> retrievePostsByUserId(user))
-                    .flatMap(List::stream)
-                    .collect(Collectors.toList());
-        }
-        return Collections.emptyList();
-    }
-
-    @Override
-    public Set<String> followUser(String userId, String userIdToFollow) {
-        if (isUserPresent(userId) && isUserPresent(userIdToFollow)) {
-            addNewFollowedUser(userId, userIdToFollow);
-            return retrieveFollowedUsersByUserId(userId);
-        }
-        return Collections.emptySet();
-    }
-
-    private Function<UserEntity, User> mapUserEntityToUser() {
-        return user -> User.builder()
-                .userId(user.getUserId())
-                .creationDate(user.getCreationDate())
-                .followedUsers(getFollowedUsersByUserId(user.getUserId()))
-                .build();
-    }
-
-    private Set<String> retrieveFollowedUsersByUserId(String userId) {
-        return followedUsers.get(userId);
-    }
-
-    private Set<String> getFollowedUsersByUserId(String userId) {
-        return retrieveFollowedUsersByUserId(userId);
+    public List<Post> getPostsByUserIds(List<String> userIds) {
+        return userIds.stream()
+                .map(this::retrievePostsByUserId)
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
     }
 
     private List<Post> retrievePostsByUserId(String userId) {
-        return posts.get(userId).stream().map(p -> createPost(userId, p)).collect(Collectors.toList());
+        return postsByUserId.get(userId).stream()
+                .map(p -> createPost(userId, p))
+                .collect(Collectors.toList());
     }
 
-    private boolean isUserPresent(String userId) {
-        return Optional.ofNullable(users.get(userId)).isPresent();
-    }
-
-    private void addUserIfAbsent(String userId) {
-        users.computeIfAbsent(userId, (user) -> createNewUserEntity(userId));
-    }
 
     private void addNewPost(Post post, String userID) {
-        posts.computeIfAbsent(userID, k -> new ArrayList<>()).add(createNewPostEntity(post));
-    }
-
-    private void addNewFollowedUser(String userId, String userIdToFollow) {
-        followedUsers.computeIfAbsent(userId, k -> new HashSet<>()).add(userIdToFollow);
+        postsByUserId.computeIfAbsent(userID, k -> new ArrayList<>()).add(createNewPostEntity(post));
     }
 
     private Post createPost(String userName, PostEntity p) {
@@ -98,11 +50,10 @@ class InMemoryPostsRepository implements PostsRepository {
     }
 
     private PostEntity createNewPostEntity(Post post) {
-        return PostEntity.builder().postDate(LocalDateTime.now()).message(post.getMessage()).build();
+        return PostEntity.builder().userId(post.getUser()).postDate(getLocalDateNow()).message(post.getMessage()).build();
     }
 
-    private UserEntity createNewUserEntity(String userId) {
-        return UserEntity.builder().userId(userId).creationDate(LocalDateTime.now()).build();
+    private LocalDateTime getLocalDateNow() {
+        return localDateTimeProvider.getLocalDateNow();
     }
-
 }

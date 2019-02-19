@@ -2,6 +2,7 @@ package com.mpecherzewski.socialnetworkapp;
 
 import com.mpecherzewski.socialnetworkapp.domain.model.Post;
 import org.hamcrest.collection.IsIterableContainingInOrder;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,19 +11,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SocialNetworkAppApplicationGetPostsTests extends SocialNetworkAppApplicationBaseTests {
+public class SocialNetworkAppGetPostsTests extends SocialNetworkAppBaseTests {
+
+    @Before
+    public void setUp() {
+        LocalDateTime now = LocalDateTime.now();
+        when(localDateTimeProvider.getLocalDateNow()).thenReturn(now, now.plusSeconds(100), now.plusSeconds(200));
+    }
 
     @Test
-    public void testShouldReturnPostsForUser()  {
+    public void testShouldReturnPostsForUser() {
         //given
         String userID = "userTestAddPost1";
         String userID2 = "userTestAddPost2";
@@ -42,16 +51,14 @@ public class SocialNetworkAppApplicationGetPostsTests extends SocialNetworkAppAp
 
 
     @Test
-    public void testShouldReturnPostsInReverseOrder() throws InterruptedException {
+    public void testShouldReturnPostsInReverseOrder() {
         //given
         String userID = "userTestAddPost";
         String message1 = "new post";
         String message2 = "new post2";
         String message3 = "new post3";
         callAddPost(userID, createPostRq(message1));
-        Thread.sleep(100);
         callAddPost(userID, createPostRq(message2));
-        Thread.sleep(100);
         callAddPost(userID, createPostRq(message3));
 
         //when
@@ -66,7 +73,7 @@ public class SocialNetworkAppApplicationGetPostsTests extends SocialNetworkAppAp
     }
 
     @Test
-    public void testShouldReturnBadRequestForNotExistingUser() {
+    public void testShouldReturnNotFoundForNotExistingUser() {
         //given
         String userID = "invalidUser";
 
@@ -74,7 +81,7 @@ public class SocialNetworkAppApplicationGetPostsTests extends SocialNetworkAppAp
         ResponseEntity<String> result = callGetForEntity(MessageFormat.format(API_POSTS, userID));
 
         //then
-        assertThat(result.getStatusCode(), is(HttpStatus.BAD_REQUEST));
+        assertThat(result.getStatusCode(), is(HttpStatus.NOT_FOUND));
         assertThat(result.getBody(), is(MessageFormat.format(MSG_USER_DOES_NOT_EXISTS, userID)));
     }
 

@@ -1,16 +1,17 @@
 package com.mpecherzewski.socialnetworkapp.repository.impl;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
-@Builder
-@Getter
-class UserEntity {
 
-    private String userId;
-    private LocalDateTime creationDate;
+@Builder
+@Value
+@EqualsAndHashCode(callSuper = true)
+class UserEntity extends Entity {
+    String userId;
+    LocalDateTime creationDate;
+
 }

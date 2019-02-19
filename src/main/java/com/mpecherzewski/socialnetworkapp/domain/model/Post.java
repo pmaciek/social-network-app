@@ -6,12 +6,13 @@ import lombok.Value;
 
 import java.time.LocalDateTime;
 
-@Value
+
 @Builder
+@Value
 public class Post {
 
-    String user;
-    String message;
-    LocalDateTime postDate;
+    private String user;
+    private String message;
+    private LocalDateTime postDate;
 }
 

@@ -2,6 +2,7 @@ package com.mpecherzewski.socialnetworkapp;
 
 import com.mpecherzewski.socialnetworkapp.domain.model.Post;
 import org.hamcrest.collection.IsIterableContainingInOrder;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,18 +11,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SocialNetworkAppApplicationGetFollowedPostsTests extends SocialNetworkAppApplicationBaseTests {
+public class SocialNetworkAppGetFollowedPostsTests extends SocialNetworkAppBaseTests {
+
+    @Before
+    public void setUp()  {
+        LocalDateTime now = LocalDateTime.now();
+        when(localDateTimeProvider.getLocalDateNow()).thenReturn(now, now.plusSeconds(100), now.plusSeconds(200));
+    }
 
     @Test
-    public void testShouldReturnFollowedPostsInReverseOrder() throws InterruptedException {
+    public void testShouldReturnFollowedPostsInReverseOrder() {
         //given
         String userId = "callingUser";
         String userId1 = "userFollowed1";
@@ -31,7 +40,6 @@ public class SocialNetworkAppApplicationGetFollowedPostsTests extends SocialNetw
         String message3 = "new post 3";
         callAddPost(userId, createPostRq(message1));
         callAddPost(userId1, createPostRq(message2));
-        Thread.sleep(100);
         callAddPost(userId2, createPostRq(message3));
         callFollowUser(userId, userId1);
         callFollowUser(userId, userId2);
@@ -46,7 +54,7 @@ public class SocialNetworkAppApplicationGetFollowedPostsTests extends SocialNetw
     }
 
     @Test
-    public void testShouldReturnBadRequestForNotExistingUser() {
+    public void testShouldReturnNotFoundForNotExistingUser() {
         //given
         String userID = "notExistingUser";
 
@@ -54,7 +62,7 @@ public class SocialNetworkAppApplicationGetFollowedPostsTests extends SocialNetw
         ResponseEntity<String> result = callGetForEntity(MessageFormat.format(API_GET_FOLLOWED_POSTS, userID));
 
         //then
-        assertThat(result.getStatusCode(), is(HttpStatus.BAD_REQUEST));
+        assertThat(result.getStatusCode(), is(HttpStatus.NOT_FOUND));
         assertThat(result.getBody(), is(MessageFormat.format(MSG_USER_DOES_NOT_EXISTS, userID)));
     }
 }

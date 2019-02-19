@@ -1,6 +1,6 @@
 package com.mpecherzewski.socialnetworkapp.api;
 
-import com.mpecherzewski.socialnetworkapp.domain.service.SocialNetworkValidationException;
+import com.mpecherzewski.socialnetworkapp.service.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 public class ExceptionHandlerController {
 
-    @ExceptionHandler(SocialNetworkValidationException.class)
+    @ExceptionHandler(UserNotFoundException.class)
     @ResponseBody
-    public ResponseEntity<String> handlReviewServiceValidationError(SocialNetworkValidationException exception) {
-        log.error("Validation error occurred: {}, {}", exception.getErrorCode(), exception.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getErrorCode());
+    public ResponseEntity<String> handleUserNotFoundError(UserNotFoundException exception) {
+        log.error("Requested user not found: {}, {}", exception.getErrorCode(), exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getErrorCode());
     }
-
 }

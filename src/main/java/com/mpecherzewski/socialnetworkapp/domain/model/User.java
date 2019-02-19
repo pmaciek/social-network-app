@@ -4,13 +4,13 @@ import lombok.Builder;
 import lombok.Value;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
-@Value
+
 @Builder
+@Value
 public class User {
-
     String userId;
     LocalDateTime creationDate;
-    Set<String> followedUsers;
+    List<String> trackedUsers;
 }

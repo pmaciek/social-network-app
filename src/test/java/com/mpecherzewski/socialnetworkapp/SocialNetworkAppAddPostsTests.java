@@ -17,7 +17,7 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SocialNetworkAppApplicationAddPostsTests extends SocialNetworkAppApplicationBaseTests {
+public class SocialNetworkAppAddPostsTests extends SocialNetworkAppBaseTests {
 
     @Test
     public void testShouldAddNewPostForNotExistingUser() {
@@ -26,9 +26,11 @@ public class SocialNetworkAppApplicationAddPostsTests extends SocialNetworkAppAp
         String message = "new post";
 
         //when
-        List<Post> posts = callAddPost(userID, createPostRq(message));
+        ResponseEntity responseEntity = callAddPost(userID, createPostRq(message));
+        List<Post> posts = callGetPosts(userID);
 
         //then
+        assertThat(responseEntity.getStatusCode(), is(HttpStatus.CREATED));
         assertThat(posts, hasSize(1));
         assertThat(posts, hasItems(new PostMatcher(userID, message)));
     }
@@ -42,9 +44,11 @@ public class SocialNetworkAppApplicationAddPostsTests extends SocialNetworkAppAp
         callAddPost(userID, createPostRq(message1));
 
         //when
-        List<Post> posts = callAddPost(userID, createPostRq(message2));
+        ResponseEntity responseEntity = callAddPost(userID, createPostRq(message2));
+        List<Post> posts = callGetPosts(userID);
 
         //then
+        assertThat(responseEntity.getStatusCode(), is(HttpStatus.CREATED));
         assertThat(posts, hasSize(2));
         assertThat(posts, hasItems(new PostMatcher(userID, message1), new PostMatcher(userID, message2)));
     }
