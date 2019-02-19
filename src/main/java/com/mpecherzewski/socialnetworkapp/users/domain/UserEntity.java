@@ -15,8 +15,4 @@ class UserEntity {
     String userId;
     LocalDateTime creationDate;
     Set<String> trackedUsers;
-
-    void addTrackedUser(String userId) {
-        trackedUsers.add(userId);
-    }
 }
