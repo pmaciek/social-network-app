@@ -1,7 +1,7 @@
 package com.mpecherzewski.socialnetworkapp;
 
 import com.mpecherzewski.socialnetworkapp.api.model.AddPostDto;
-import com.mpecherzewski.socialnetworkapp.domain.model.Post;
+import com.mpecherzewski.socialnetworkapp.domain.Post;
 import com.mpecherzewski.socialnetworkapp.repository.impl.LocalDateTimeProvider;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;

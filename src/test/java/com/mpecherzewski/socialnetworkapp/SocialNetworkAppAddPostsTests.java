@@ -1,6 +1,6 @@
 package com.mpecherzewski.socialnetworkapp;
 
-import com.mpecherzewski.socialnetworkapp.domain.model.Post;
+import com.mpecherzewski.socialnetworkapp.domain.Post;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

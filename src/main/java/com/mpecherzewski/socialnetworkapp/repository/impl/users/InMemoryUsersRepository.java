@@ -1,8 +1,9 @@
-package com.mpecherzewski.socialnetworkapp.repository.impl;
+package com.mpecherzewski.socialnetworkapp.repository.impl.users;
 
-import com.mpecherzewski.socialnetworkapp.domain.model.User;
+import com.mpecherzewski.socialnetworkapp.domain.User;
 import com.mpecherzewski.socialnetworkapp.repository.TracksRepository;
 import com.mpecherzewski.socialnetworkapp.repository.UsersRepository;
+import com.mpecherzewski.socialnetworkapp.repository.impl.LocalDateTimeProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +13,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -43,10 +43,7 @@ class InMemoryUsersRepository implements UsersRepository {
     }
 
     private List<String> getTracksByUserId(UserEntity user) {
-        return tracksRepository.getTracksByUserId(user.getUserId())
-                .stream()
-                .map(TrackEntity::getUserId)
-                .collect(Collectors.toList());
+        return tracksRepository.getTracksByUserId(user.getUserId());
     }
 
     private UserEntity createNewUserEntity(String userId) {

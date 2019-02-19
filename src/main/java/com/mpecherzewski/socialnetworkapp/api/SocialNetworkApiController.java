@@ -1,7 +1,7 @@
 package com.mpecherzewski.socialnetworkapp.api;
 
 import com.mpecherzewski.socialnetworkapp.api.model.AddPostDto;
-import com.mpecherzewski.socialnetworkapp.domain.model.Post;
+import com.mpecherzewski.socialnetworkapp.domain.Post;
 import com.mpecherzewski.socialnetworkapp.service.SocialNetworkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

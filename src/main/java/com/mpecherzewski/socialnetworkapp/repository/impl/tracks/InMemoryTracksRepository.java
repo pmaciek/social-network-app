@@ -1,14 +1,13 @@
-package com.mpecherzewski.socialnetworkapp.repository.impl;
+package com.mpecherzewski.socialnetworkapp.repository.impl.tracks;
 
 import com.mpecherzewski.socialnetworkapp.repository.TracksRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static java.util.stream.Collectors.toList;
 
 @Repository
 @RequiredArgsConstructor
@@ -17,8 +16,8 @@ class InMemoryTracksRepository implements TracksRepository {
     private final Map<String, Set<TrackEntity>> tacksByUserId = new ConcurrentHashMap<>();
 
     @Override
-    public Set<TrackEntity> getTracksByUserId(String userId) {
-        return tacksByUserId.getOrDefault(userId, Collections.emptySet());
+    public List<String> getTracksByUserId(String userId) {
+        return tacksByUserId.getOrDefault(userId, Collections.emptySet()).stream().map(TrackEntity::getUserId).collect(toList());
     }
 
     @Override

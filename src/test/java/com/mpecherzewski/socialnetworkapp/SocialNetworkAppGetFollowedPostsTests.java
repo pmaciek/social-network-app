@@ -1,6 +1,6 @@
 package com.mpecherzewski.socialnetworkapp;
 
-import com.mpecherzewski.socialnetworkapp.domain.model.Post;
+import com.mpecherzewski.socialnetworkapp.domain.Post;
 import org.hamcrest.collection.IsIterableContainingInOrder;
 import org.junit.Before;
 import org.junit.Test;

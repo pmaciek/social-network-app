@@ -1,12 +1,10 @@
 package com.mpecherzewski.socialnetworkapp.repository;
 
-import com.mpecherzewski.socialnetworkapp.repository.impl.TrackEntity;
-
-import java.util.Set;
+import java.util.List;
 
 public interface TracksRepository {
 
     void trackUser(String userId, String userIdToTrack);
 
-    Set<TrackEntity> getTracksByUserId(String userId);
+    List<String> getTracksByUserId(String userId);
 }

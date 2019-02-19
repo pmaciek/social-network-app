@@ -1,7 +1,8 @@
-package com.mpecherzewski.socialnetworkapp.repository.impl;
+package com.mpecherzewski.socialnetworkapp.repository.impl.posts;
 
-import com.mpecherzewski.socialnetworkapp.domain.model.Post;
+import com.mpecherzewski.socialnetworkapp.domain.Post;
 import com.mpecherzewski.socialnetworkapp.repository.PostsRepository;
+import com.mpecherzewski.socialnetworkapp.repository.impl.LocalDateTimeProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

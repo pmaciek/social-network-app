@@ -1,6 +1,6 @@
 package com.mpecherzewski.socialnetworkapp.repository;
 
-import com.mpecherzewski.socialnetworkapp.domain.model.Post;
+import com.mpecherzewski.socialnetworkapp.domain.Post;
 
 import java.util.List;
 

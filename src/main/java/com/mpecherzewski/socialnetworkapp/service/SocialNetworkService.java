@@ -1,7 +1,7 @@
 package com.mpecherzewski.socialnetworkapp.service;
 
-import com.mpecherzewski.socialnetworkapp.domain.model.Post;
-import com.mpecherzewski.socialnetworkapp.domain.model.User;
+import com.mpecherzewski.socialnetworkapp.domain.Post;
+import com.mpecherzewski.socialnetworkapp.domain.User;
 import com.mpecherzewski.socialnetworkapp.repository.PostsRepository;
 import com.mpecherzewski.socialnetworkapp.repository.TracksRepository;
 import com.mpecherzewski.socialnetworkapp.repository.UsersRepository;

@@ -1,4 +1,4 @@
-package com.mpecherzewski.socialnetworkapp.domain.model;
+package com.mpecherzewski.socialnetworkapp.domain;
 
 import lombok.Builder;
 import lombok.Value;
