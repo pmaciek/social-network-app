@@ -1,4 +1,4 @@
-package com.mpecherzewski.socialnetworkapp.infastructure.mvc;
+package com.mpecherzewski.socialnetworkapp.users.dto;
 
 
 import lombok.Getter;

@@ -10,7 +10,7 @@ class PostConfiguration {
 
     @Bean
     PostsRepository postsRepository(LocalDateTimeProvider localDateTimeProvider) {
-        return new InMemoryPostsRepository(new LocalDateTimeProvider());
+        return new InMemoryPostsRepository(localDateTimeProvider);
     }
 
     @Bean

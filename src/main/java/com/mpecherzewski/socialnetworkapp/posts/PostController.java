@@ -6,7 +6,6 @@ import com.mpecherzewski.socialnetworkapp.posts.dto.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,9 +23,9 @@ class PostController {
     }
 
     @PostMapping(path = "/users/{userId}/posts", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Post> addPost(@PathVariable String userId, @Valid @RequestBody AddPostDto addPostRequest) {
-        Post post = postFacade.addNewPost(userId, addPostRequest.getMessage());
-        return new ResponseEntity(post, HttpStatus.CREATED);
+    @ResponseStatus(HttpStatus.CREATED)
+    Post addPost(@PathVariable String userId, @Valid @RequestBody AddPostDto addPostRequest) {
+        return postFacade.addNewPost(userId, addPostRequest.getMessage());
     }
 
     @GetMapping(path = "/users/{userId}/trackedPosts", produces = MediaType.APPLICATION_JSON_VALUE)

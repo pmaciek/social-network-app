@@ -1,19 +1,19 @@
 package com.mpecherzewski.socialnetworkapp.users.domain;
 
 import com.mpecherzewski.socialnetworkapp.users.dto.User;
+import com.mpecherzewski.socialnetworkapp.users.dto.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
-import java.util.function.Function;
 
 @RequiredArgsConstructor
 public class UserFacade {
     private final UsersRepository userRepository;
 
     public Optional<User> getUserById(String userId) {
-        return userRepository.getUser(userId).map(mapUserEntityToUser());
+        return userRepository.getUser(userId).map(this::mapUserEntityToUser);
     }
 
     public void addUser(String userId) {
@@ -21,15 +21,19 @@ public class UserFacade {
     }
 
     public User trackUser(String userId, String userIdToTrack) {
-        return mapUserEntityToUser().apply(userRepository.trackUser(userId, userIdToTrack));
+        return mapUserEntityToUser(userRepository.trackUser(userId, userIdToTrack));
     }
 
-    private Function<UserEntity, User> mapUserEntityToUser() {
-        return user -> User.builder()
-                .id(user.getId())
-                .userId(user.getUserId())
-                .creationDate(user.getCreationDate())
-                .trackedUsers(Collections.unmodifiableList(new ArrayList<>(user.getTrackedUsers())))
+    public User loadUser(String userId) {
+        return getUserById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+    }
+
+    private User mapUserEntityToUser(UserEntity userEntity) {
+        return User.builder()
+                .id(userEntity.getId())
+                .userId(userEntity.getUserId())
+                .creationDate(userEntity.getCreationDate())
+                .trackedUsers(Collections.unmodifiableList(new ArrayList<>(userEntity.getTrackedUsers())))
                 .build();
     }
 }

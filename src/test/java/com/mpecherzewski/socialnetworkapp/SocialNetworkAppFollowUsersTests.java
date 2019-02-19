@@ -9,13 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.Collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -64,7 +61,7 @@ public class SocialNetworkAppFollowUsersTests extends SocialNetworkAppBaseTests 
         ResponseEntity<User> responseEntity = callFollowUser(userId, userId2);
 
         //then
-        assertThat(responseEntity.getStatusCode(), is(HttpStatus.CREATED));
+        assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
         assertThat(responseEntity.getBody().getId(), is(notNullValue()));
         assertThat(responseEntity.getBody().getUserId(), is(userId));
         assertThat(responseEntity.getBody().getCreationDate(), is(notNullValue()));

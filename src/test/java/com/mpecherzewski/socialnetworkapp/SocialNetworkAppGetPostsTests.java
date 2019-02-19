@@ -27,7 +27,10 @@ public class SocialNetworkAppGetPostsTests extends SocialNetworkAppBaseTests {
     @Before
     public void setUp() {
         LocalDateTime now = LocalDateTime.now();
-        when(localDateTimeProvider.getLocalDateNow()).thenReturn(now, now.plusSeconds(100), now.plusSeconds(200));
+        LocalDateTime nowPlus10 = now.plusSeconds(10);
+        LocalDateTime nowPlus20 = now.plusSeconds(20);
+        LocalDateTime nowPlus30 = now.plusSeconds(30);
+        when(localDateTimeProvider.getLocalDateNow()).thenReturn(now, nowPlus10, nowPlus20, nowPlus30);
     }
 
     @Test

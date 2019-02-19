@@ -7,7 +7,6 @@ import com.mpecherzewski.socialnetworkapp.users.dto.User;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.junit.Before;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -29,8 +28,8 @@ class SocialNetworkAppBaseTests {
     static final String API_FOLLOW_USER = "/api/v1/users/{0}/tracks/{1}";
     static final String MSG_USER_DOES_NOT_EXISTS = "User {0} does not exist";
 
-    @Mock
-    protected LocalDateTimeProvider localDateTimeProvider;
+    @MockBean
+    LocalDateTimeProvider localDateTimeProvider;
 
     @Before
     public void setUp() {

@@ -1,7 +1,7 @@
 package com.mpecherzewski.socialnetworkapp.users.domain;
 
 import com.mpecherzewski.socialnetworkapp.infastructure.LocalDateTimeProvider;
-import com.mpecherzewski.socialnetworkapp.infastructure.mvc.UserNotFoundException;
+import com.mpecherzewski.socialnetworkapp.users.dto.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -29,9 +29,8 @@ class InMemoryUsersRepository implements UsersRepository {
     public UserEntity trackUser(String userId, String userIdToTrack) {
         UserEntity user = getUser(userId).orElseThrow(() -> new UserNotFoundException(userId));
         UserEntity userToTrack = getUser(userIdToTrack).orElseThrow(() -> new UserNotFoundException(userIdToTrack));
-        UserEntity userEntity = usersByUserId.get(user.getUserId());
-        userEntity.addTrackedUser(userToTrack.getUserId());
-        return userEntity;
+        user.addTrackedUser(userToTrack.getUserId());
+        return user;
     }
 
     private UserEntity createNewUserEntity(String userId) {

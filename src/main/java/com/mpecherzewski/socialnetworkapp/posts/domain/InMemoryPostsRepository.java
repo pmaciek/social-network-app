@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -32,7 +34,7 @@ class InMemoryPostsRepository implements PostsRepository {
     }
 
     private List<PostEntity> retrievePostsByUserId(String userId) {
-        return postsByUserId.get(userId);
+        return Optional.ofNullable(postsByUserId.get(userId)).orElse(Collections.emptyList());
     }
 
     private void addNewPost(PostEntity post) {

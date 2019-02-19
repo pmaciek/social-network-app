@@ -1,6 +1,5 @@
 package com.mpecherzewski.socialnetworkapp.posts.domain;
 
-import com.mpecherzewski.socialnetworkapp.infastructure.mvc.UserNotFoundException;
 import com.mpecherzewski.socialnetworkapp.posts.dto.Post;
 import com.mpecherzewski.socialnetworkapp.users.domain.UserFacade;
 import com.mpecherzewski.socialnetworkapp.users.dto.User;
@@ -25,7 +24,7 @@ public class PostFacade {
     }
 
     public List<Post> getPostsByUserId(String userId) {
-        User user = getUser(userId);
+        User user = userFacade.loadUser(userId);
         return sortReverseOrder(
                 postsRepository.getPostsByUserIds(
                         Collections.singletonList(user.getUserId())).stream()
@@ -34,7 +33,7 @@ public class PostFacade {
     }
 
     public List<Post> getTrackedPostsByUserId(String userId) {
-        User user = getUser(userId);
+        User user = userFacade.loadUser(userId);
         return sortReverseOrder(postsRepository.getPostsByUserIds(user.getTrackedUsers()).stream().map(this::mapToPost)
                 .collect(Collectors.toList()));
     }
@@ -47,10 +46,6 @@ public class PostFacade {
         return posts.stream()
                 .sorted(Comparator.comparing(Post::getPostDate).reversed())
                 .collect(Collectors.toList());
-    }
-
-    private User getUser(String userId) {
-        return userFacade.getUserById(userId).orElseThrow(() -> new UserNotFoundException(userId));
     }
 
     private Post mapToPost(PostEntity post) {
