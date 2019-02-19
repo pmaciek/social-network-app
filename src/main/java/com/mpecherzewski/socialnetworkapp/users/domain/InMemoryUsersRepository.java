@@ -41,7 +41,7 @@ class InMemoryUsersRepository implements UsersRepository {
     private UserEntity createNewUserEntityWithNewTrack(UserEntity userEntity, String userToTrack) {
         HashSet<String> tracks = new HashSet<>(userEntity.getTrackedUsers());
         tracks.add(userToTrack);
-        return UserEntity.builder().userId(userEntity.getUserId()).creationDate(userEntity.getCreationDate()).trackedUsers(tracks).build();
+        return UserEntity.builder().userId(userEntity.getUserId()).creationDate(getLocalDateNow()).trackedUsers(tracks).build();
     }
 
     private LocalDateTime getLocalDateNow() {
