@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class SocialNetworkService {
-    private static final String MSG_USER_DOES_NOT_EXIST = "User %s does not exist";
     private final UsersRepository userRepository;
     private final PostsRepository postsRepository;
     private final TracksRepository tracksRepository;
@@ -50,5 +49,4 @@ public class SocialNetworkService {
                 .sorted(Comparator.comparing(Post::getPostDate).reversed())
                 .collect(Collectors.toList());
     }
-
 }
