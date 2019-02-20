@@ -20,22 +20,22 @@ API exposes operation for:
 
 - method : POST
 
-- Data params : A message object , example : {"message": "message to post"}
+- Data params : A message value , example : {"message": "message to post"}
 
 #### Displaying posted messages
 - url : /api/v1/users/{userId}/posts
 
 - method : GET
 
-#### Following users
+#### Tacking user
 - url : /api/v1/users/{userId}/tracks/{userIdToFollow}
 
 - method : POST
 
 - Data params : none
 
-#### Displaying following posts
-- url : /api/v1/users/{userId}/tracks
+#### Displaying tracked posts
+- url : /api/v1/users/{userId}/trackedPosts
 
 - method : GET
 

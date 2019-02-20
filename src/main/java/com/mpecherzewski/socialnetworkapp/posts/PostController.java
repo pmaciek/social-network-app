@@ -1,8 +1,8 @@
 package com.mpecherzewski.socialnetworkapp.posts;
 
-import com.mpecherzewski.socialnetworkapp.posts.domain.PostFacade;
+import com.mpecherzewski.socialnetworkapp.posts.facade.PostFacade;
 import com.mpecherzewski.socialnetworkapp.posts.dto.AddPostDto;
-import com.mpecherzewski.socialnetworkapp.posts.dto.Post;
+import com.mpecherzewski.socialnetworkapp.posts.domain.Post;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

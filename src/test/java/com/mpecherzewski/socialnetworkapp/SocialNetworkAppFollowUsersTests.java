@@ -1,6 +1,6 @@
 package com.mpecherzewski.socialnetworkapp;
 
-import com.mpecherzewski.socialnetworkapp.users.dto.User;
+import com.mpecherzewski.socialnetworkapp.users.domain.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -61,7 +61,7 @@ public class SocialNetworkAppFollowUsersTests extends SocialNetworkAppBaseTests 
         ResponseEntity<User> responseEntity = callFollowUser(userId, userId2);
 
         //then
-        assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
+        assertThat(responseEntity.getStatusCode(), is(HttpStatus.CREATED));
         assertThat(responseEntity.getBody().getId(), is(notNullValue()));
         assertThat(responseEntity.getBody().getUserId(), is(userId));
         assertThat(responseEntity.getBody().getCreationDate(), is(notNullValue()));

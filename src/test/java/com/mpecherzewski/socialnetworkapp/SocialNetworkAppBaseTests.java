@@ -2,8 +2,8 @@ package com.mpecherzewski.socialnetworkapp;
 
 import com.mpecherzewski.socialnetworkapp.infastructure.LocalDateTimeProvider;
 import com.mpecherzewski.socialnetworkapp.posts.dto.AddPostDto;
-import com.mpecherzewski.socialnetworkapp.posts.dto.Post;
-import com.mpecherzewski.socialnetworkapp.users.dto.User;
+import com.mpecherzewski.socialnetworkapp.posts.domain.Post;
+import com.mpecherzewski.socialnetworkapp.users.domain.User;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.junit.Before;
